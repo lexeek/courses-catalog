@@ -14,8 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.urls import include
 from django.urls import path
+from django.views.generic import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+# Use include () to add URL from app directory
+urlpatterns += [
+     path('catalog/', include('catalog.urls')),
+]
+
+# Add URL relation to redirect requests to the root URL(the URL of the application)
+urlpatterns += [
+    path('', RedirectView.as_view(url='/catalog/', permanent=True)),
+]
+
+# Use the static () to add a relation for static files
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
