@@ -1,3 +1,82 @@
 from django.shortcuts import render
+from django.contrib import messages
+from django import forms
+from json_views.views import JSONListView, JSONDetailView
+from django.http import JsonResponse
+from django.core import serializers
+from django.forms.models import model_to_dict
+import json
+
+from django.views.generic import ListView, DetailView
+
+from .models import Course
+
 
 # Create your views here.
+
+class CourseListView(ListView):
+    queryset = Course.objects.all()
+    template_name = 'index.html'
+
+    # Filters function
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        queryset = Course.objects.all()
+
+        if query:
+            queryset = queryset.filter(title__icontains=query)
+        elif start_date:
+            queryset = queryset.filter(start_date__gte=start_date)
+        elif start_date:
+            queryset = queryset.filter(end_date__lte=end_date)
+
+        return queryset
+
+
+class CourseDetailView(DetailView):
+    queryset = Course.objects.all()
+    template_name = 'course-detail.html'
+
+
+class CourseDetailEdit(DetailView):
+    queryset = Course.objects.all()
+    template_name = 'course-detail.html'
+
+
+# Function to add new course to the database
+def add_course(request):
+    if request.method == "POST" and request.POST.get('title'):
+        Course.objects.create(
+            title=request.POST.get('title'),
+            start_date=request.POST.get('start_date'),
+            end_date=request.POST.get('end_date'),
+            number_of_lectures=request.POST.get('number_of_lectures'))
+
+        messages.add_message(request, messages.INFO, 'Курс успешно добавлен')
+    return render(request, 'form-add-course.html')
+
+# class CourseForm(forms.ModelForm):
+#
+#     def add_course(self):
+#         if self.method == "POST" and request.POST.get('title'):
+#             Course.objects.create(
+#                 title=self.POST.get('title'),
+#                 start_date=self.POST.get('start_date'),
+#                 end_date=self.POST.get('end_date'),
+#                 number_of_lectures=self.POST.get('number_of_lectures'))
+#
+#         return render(self, "form-add-course.html")
+#
+#     def clean(self):
+#         cleaned_data = super().clean()
+#         start_date = cleaned_data.get("start_date")
+#         end_date = cleaned_data.get("end_date")
+#         if end_date < start_date:
+#             raise forms.ValidationError("End date should be greater than start date.")
+
+
+# def index(request):
+#     queryset = Course.objects.all()
+#     return JsonResponse(list(queryset), safe=False)

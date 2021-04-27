@@ -11,13 +11,16 @@ from django.urls import reverse
 
 class Course(models.Model):
     """
-    Model representing a course
+    Model representing a single course
     """
     title = models.CharField(max_length=255, verbose_name='Название курса', help_text="Введите название курса")
     start_date = models.DateField(verbose_name='Начало курса', help_text="Укажите дату начала курса")
     end_date = models.DateField(verbose_name='Конец курса', help_text="Укажите дату окончания курса")
-    number_of_lectures = models.PositiveIntegerField(max_length=3, verbose_name='Количество лекций', help_text='Укажите количество лекций')
-    description = models.TextField(verbose_name='Описание курса', help_text='Добавьте описание курса')
+    number_of_lectures = models.PositiveIntegerField(max_length=3, verbose_name='Количество лекций',
+                                                     help_text='Укажите количество лекций')
+
+    class Meta:
+        ordering = ["start_date"]
 
     # Methods
     def __str__(self):

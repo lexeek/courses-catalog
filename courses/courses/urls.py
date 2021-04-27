@@ -20,11 +20,12 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-# Use include () to add URL from app directory
+# Use include() to add URL from app directory
 urlpatterns += [
      path('catalog/', include('catalog.urls')),
 ]
@@ -36,3 +37,4 @@ urlpatterns += [
 
 # Use the static () to add a relation for static files
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
