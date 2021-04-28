@@ -1,6 +1,5 @@
 from django.db import models
-
-# Create your models here.
+from django.urls import reverse
 
 
 # Курс має мати наступні атрибути:
@@ -26,5 +25,5 @@ class Course(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        # Returns the url to access a particular item instance.
+        # Returns the url to access a particular course instance.
         return reverse('course_detail', args=[str(self.id)])
