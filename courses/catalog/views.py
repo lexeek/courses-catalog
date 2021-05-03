@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
+from django.urls import reverse
+
 from django import forms
 from json_views.views import JSONListView, JSONDetailView
 from django.http import JsonResponse
@@ -7,7 +9,7 @@ from django.core import serializers
 from django.forms.models import model_to_dict
 import json
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, DeleteView
 
 from .models import Course
 
@@ -45,7 +47,7 @@ class CourseDetailEdit(DetailView):
     template_name = 'course-detail.html'
 
 
-# Function to add new course to the database
+# add new course to the database
 def add_course(request):
     if request.method == "POST" and request.POST.get('title'):
         Course.objects.create(
@@ -56,6 +58,16 @@ def add_course(request):
 
         messages.add_message(request, messages.INFO, 'Курс успешно добавлен')
     return render(request, 'form-add-course.html')
+
+
+# delete a course
+class CourseDeleteView(DeleteView):
+    model = Course
+    template_name = 'course-delete-confirm.html'
+    success_url = '/'
+
+    def get(self, *a, **kw):
+        return self.delete(*a, **kw)
 
 # class CourseForm(forms.ModelForm):
 #

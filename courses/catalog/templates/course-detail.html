@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Catalog</a></li>
+        <li class="breadcrumb-item"><a href="#">Course</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
+      </ol>
+    </nav>
+    <div class="card text-center mt-5">
+      <div class="card-body">
+        <h5 class="card-title">{{ course.title }}</h5>
+        <p class="card-text">Number of lectures : {{ course.number_of_lectures }}</p>
+        <p class="card-text">{{ course.start_date }} - {{ course.end_date }}</p>
+      </div>
+      <div class="card-footer text-muted">
+        <a href="#" class="btn btn-primary">Start studying</a>
+      </div>
+    </div>
+{% endblock %}

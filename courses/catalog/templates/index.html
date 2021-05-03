@@ -44,8 +44,11 @@
                         {% for course in object_list %}
                           <a href="{{ course.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start mb-3">
                             <div class="d-flex w-100 justify-content-between">
-                              <h5 class="mb-1">{{ course.title }}</h5>
-                              <small class="text-muted">{{ course.start_date }} - {{ course.end_date }}</small>
+                                <h5 class="mb-1">{{ course.title }}</h5>
+                                <small class="text-muted">{{ course.start_date }} - {{ course.end_date }}</small>
+                                <a href="#" class="btn btn-primary" role="button" aria-pressed="true" style="height:50px; font-size:14px;">Edit</a>
+                                <a href="{% url 'index' %}{{course.pk}}/delete" class="btn btn-secondary" role="button" aria-pressed="true" style="height:50px; font-size:14px;">Delete</a>
+
                             </div>
                             <p class="mb-1 text-left">The number of lectures: {{ course.number_of_lectures }}</p>
                           </a>
