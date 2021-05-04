@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
+from .forms import CourseCreateForm
+import time
 from django.urls import reverse
 
 from django import forms
@@ -15,6 +17,20 @@ from .models import Course
 
 
 # Create your views here.
+
+def course_create(request):
+    if request.method == "POST":
+        form = CourseCreateForm(request.POST)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.save()
+            messages.add_message(request, messages.INFO, 'Курс успешно добавлен')
+            return render(request, 'form-add-course.html')
+
+    else:
+        form = CourseCreateForm()
+    return render(request, 'form-add-course.html', {'form': form})
+
 
 class CourseListView(ListView):
     queryset = Course.objects.all()
@@ -68,6 +84,9 @@ class CourseDeleteView(DeleteView):
 
     def get(self, *a, **kw):
         return self.delete(*a, **kw)
+
+
+
 
 # class CourseForm(forms.ModelForm):
 #
