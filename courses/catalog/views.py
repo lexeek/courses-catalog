@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CourseCreateForm
-import time
-from django.urls import reverse
 
 from django import forms
 from json_views.views import JSONListView, JSONDetailView
