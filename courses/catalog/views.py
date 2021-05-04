@@ -3,13 +3,13 @@ from django.contrib import messages
 from .forms import CourseCreateForm
 
 from django import forms
-from json_views.views import JSONListView, JSONDetailView
+# from json_views.views import JSONListView, JSONDetailView
 from django.http import JsonResponse
 from django.core import serializers
 from django.forms.models import model_to_dict
 import json
 
-from django.views.generic import ListView, DetailView, DeleteView
+from django.views.generic import ListView, DetailView, DeleteView, UpdateView
 
 from .models import Course
 
@@ -84,6 +84,10 @@ class CourseDeleteView(DeleteView):
         return self.delete(*a, **kw)
 
 
+class CourseUpdateView(UpdateView):
+    model = Course
+    template_name = 'form-edit-course.html'
+    fields = '__all__'
 
 
 # class CourseForm(forms.ModelForm):
