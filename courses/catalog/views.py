@@ -1,9 +1,10 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import CourseCreateForm
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView
-from django import forms
+from django.core import serializers
 
+from .forms import CourseCreateForm
 from .models import Course
 
 
@@ -24,8 +25,15 @@ def course_create(request):
 
 
 class CourseListView(ListView):
-    queryset = Course.objects.all()
-    template_name = 'index.html'
+    """
+    Return json
+    """
+
+    def render_to_response(self, context):
+        queryset = Course.objects.all()
+        data = serializers.serialize('json', queryset)
+        return HttpResponse(data, content_type='application/json')
+
 
     # Filters function
     def get_queryset(self):
@@ -38,10 +46,29 @@ class CourseListView(ListView):
             queryset = queryset.filter(title__icontains=query)
         elif start_date:
             queryset = queryset.filter(start_date__gte=start_date)
-        elif start_date:
+        elif end_date:
             queryset = queryset.filter(end_date__lte=end_date)
 
-        return queryset
+
+# class CourseListView(ListView):
+#     queryset = Course.objects.all()
+#     template_name = 'index.html'
+#
+#     # Filters function
+#     def get_queryset(self):
+#         query = self.request.GET.get('q')
+#         start_date = self.request.GET.get('start_date')
+#         end_date = self.request.GET.get('end_date')
+#         queryset = Course.objects.all()
+#
+#         if query:
+#             queryset = queryset.filter(title__icontains=query)
+#         elif start_date:
+#             queryset = queryset.filter(start_date__gte=start_date)
+#         elif end_date:
+#             queryset = queryset.filter(end_date__lte=end_date)
+#
+#         return queryset
 
 
 class CourseDetailView(DetailView):
@@ -55,16 +82,16 @@ class CourseDetailEdit(DetailView):
 
 
 # add new course to the database
-def add_course(request):
-    if request.method == "POST" and request.POST.get('title'):
-        Course.objects.create(
-            title=request.POST.get('title'),
-            start_date=request.POST.get('start_date'),
-            end_date=request.POST.get('end_date'),
-            number_of_lectures=request.POST.get('number_of_lectures'))
-
-        messages.add_message(request, messages.INFO, 'Курс успешно добавлен')
-    return render(request, 'form-add-course.html')
+# def add_course(request):
+#     if request.method == "POST" and request.POST.get('title'):
+#         Course.objects.create(
+#             title=request.POST.get('title'),
+#             start_date=request.POST.get('start_date'),
+#             end_date=request.POST.get('end_date'),
+#             number_of_lectures=request.POST.get('number_of_lectures'))
+#
+#         messages.add_message(request, messages.INFO, 'Курс успешно добавлен')
+#     return render(request, 'form-add-course.html')
 
 
 # delete a course
