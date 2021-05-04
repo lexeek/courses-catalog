@@ -6,8 +6,6 @@ urlpatterns = [
     path('', CourseListView.as_view(), name='index'),
     path('course/<int:pk>/', CourseDetailView.as_view(), name='course_detail'),
     path('add-course/', course_create, name='add_course_form'),
-
-    path('add-course/', add_course, name='add_course'),
     path('<int:pk>/delete/', CourseDeleteView.as_view()),
     path('<int:pk>/edit/', CourseUpdateView.as_view()),
 ]

@@ -1,15 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CourseCreateForm
-
-from django import forms
-# from json_views.views import JSONListView, JSONDetailView
-from django.http import JsonResponse
-from django.core import serializers
-from django.forms.models import model_to_dict
-import json
-
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView
+from django import forms
 
 from .models import Course
 
@@ -89,27 +82,3 @@ class CourseUpdateView(UpdateView):
     template_name = 'form-edit-course.html'
     fields = '__all__'
 
-
-# class CourseForm(forms.ModelForm):
-#
-#     def add_course(self):
-#         if self.method == "POST" and request.POST.get('title'):
-#             Course.objects.create(
-#                 title=self.POST.get('title'),
-#                 start_date=self.POST.get('start_date'),
-#                 end_date=self.POST.get('end_date'),
-#                 number_of_lectures=self.POST.get('number_of_lectures'))
-#
-#         return render(self, "form-add-course.html")
-#
-#     def clean(self):
-#         cleaned_data = super().clean()
-#         start_date = cleaned_data.get("start_date")
-#         end_date = cleaned_data.get("end_date")
-#         if end_date < start_date:
-#             raise forms.ValidationError("End date should be greater than start date.")
-
-
-# def index(request):
-#     queryset = Course.objects.all()
-#     return JsonResponse(list(queryset), safe=False)
