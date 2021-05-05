@@ -50,25 +50,9 @@ class CourseListView(ListView):
             queryset = queryset.filter(end_date__lte=end_date)
 
 
-# class CourseListView(ListView):
-#     queryset = Course.objects.all()
-#     template_name = 'index.html'
-#
-#     # Filters function
-#     def get_queryset(self):
-#         query = self.request.GET.get('q')
-#         start_date = self.request.GET.get('start_date')
-#         end_date = self.request.GET.get('end_date')
-#         queryset = Course.objects.all()
-#
-#         if query:
-#             queryset = queryset.filter(title__icontains=query)
-#         elif start_date:
-#             queryset = queryset.filter(start_date__gte=start_date)
-#         elif end_date:
-#             queryset = queryset.filter(end_date__lte=end_date)
-#
-#         return queryset
+class CourseIndexView(ListView):
+    queryset = Course.objects.all()
+    template_name = 'test-api.html'
 
 
 class CourseDetailView(DetailView):
